@@ -10,5 +10,7 @@
 
 实现逻辑见 demo 文件夹
 
-parseContent 用于解析拿到的 dom 结构成为展现所需要的层级嵌套结构
+parseContent 
+用于解析拿到的 dom 结构成为展现所需要的层级嵌套结构
+对每个标题节点添加 IntersectionObserver观察出现与消失
 
