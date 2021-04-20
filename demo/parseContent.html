@@ -9,6 +9,17 @@
     />
     <title>Project</title>
   </head>
+  <style>
+    section {
+      height: 80vh;
+    }
+    h1 {
+      height: 20vh;
+    }
+    h2 {
+      height: 30vh;
+    }
+  </style>
   <body>
     <pre>
 <strong style="font-size: 20px; color: skyblue;">简单解释从 dom => 🌲 的处理过程</strong>
@@ -115,6 +126,45 @@
 
       const headings = getHeadings(options)
       const nestedHeadings = getNestedHeadings(headings)
+
+      function iterateNestedHeadings(nestedHeadings, cb) {
+        for (const headingObject of nestedHeadings) {
+          cb(headingObject)
+          const { children } = headingObject
+          if (children.length) {
+            iterateNestedHeadings(children, cb)
+          }
+        }
+      }
+
+      function getHeadingObserve(nestedHeadings, cb1, cb2) {
+        const headingObserve = new IntersectionObserver(
+          entries => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                cb1 && cb1(entry)
+              } else {
+                cb2 && cb2(entry)
+              }
+            })
+          },
+          {
+            rootMargin: '0px 0px -95% 0px',
+          }
+        )
+
+        iterateNestedHeadings(nestedHeadings, handle)
+
+        function handle(headingObject) {
+          headingObserve.observe(headingObject.el)
+        }
+      }
+
+      getHeadingObserve(
+        nestedHeadings,
+        e => console.log(1, e),
+        e => console.log(2, e)
+      )
     </script>
   </body>
 </html>

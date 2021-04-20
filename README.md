@@ -4,7 +4,7 @@
 
 ![show-asdasd](http://picbed.sedationh.cn/show-asdasd.gif)
 
-无法显示、[链接🔗](http://picbed.sedationh.cn/show-asdasd.gi)
+无法显示、[链接🔗](http://picbed.sedationh.cn/show-asdasd.gif)
 
 ## 实现逻辑
 
