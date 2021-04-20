@@ -137,7 +137,7 @@
         }
       }
 
-      function getHeadingObserve(nestedHeadings, cb1, cb2) {
+      function getHeadingObserver(nestedHeadings, cb1, cb2) {
         const headingObserve = new IntersectionObserver(
           entries => {
             entries.forEach(entry => {
@@ -155,12 +155,14 @@
 
         iterateNestedHeadings(nestedHeadings, handle)
 
+        return headingObserver
+
         function handle(headingObject) {
           headingObserve.observe(headingObject.el)
         }
       }
 
-      getHeadingObserve(
+      getHeadingObserver(
         nestedHeadings,
         e => console.log(1, e),
         e => console.log(2, e)
