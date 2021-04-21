@@ -49,41 +49,49 @@
     </article>
 
     <script>
-      /**
-       * 目的 形成
-       * [
-       *  {
-       *    xxx,
-       *    children: [
-       *      {
-       *         xxx
-       *      }
-       *    ]
-       *  }
-       * 的层级嵌套结构
-       * ]
-       */
+      // 先形成数据
+      // NodeArray -> [Node]
+      // Node => {
+      //   el,
+      //   children: NodeArray,
+      //   key,
+      // }
+      ;[
+        {
+          el: {},
+          type: 'H1',
+          children: [
+            { el: {}, type: 'H2', children: [], key: '0-0' },
+            {
+              el: {},
+              type: 'H2',
+              children: [
+                { el: {}, type: 'H3', children: [], key: '0-1-0' },
+              ],
+              key: '0-1',
+            },
+          ],
+          key: '0',
+        },
+        { el: {}, type: 'H1', children: [], key: '1' },
+      ]
+
       const options = {
         headingSelector: 'h1,h2,h3',
         contentSelector: 'article',
       }
 
-      function getHeadings(options) {
-        const headings = document
-          .querySelector(options.contentSelector)
-          .querySelectorAll(options.headingSelector)
-        return headings
-      }
+      // 根据配置获取相关DOM元素
+      const headings = getHeadings(options)
+      // 处理相关的DOM元素为所需要的嵌套结构
+      const nestedHeadings = getNestedHeadings(headings)
 
-      function getHeadingObject(heading) {
-        const type = heading.tagName
-
-        return {
-          el: heading,
-          type,
-          children: [],
-          key: '',
-        }
+      function getNestedHeadings(headings) {
+        headings = Array.from(headings)
+        return headings.reduce((prev, heading) => {
+          const headingObject = getHeadingObject(heading)
+          return addNode(prev, headingObject)
+        }, [])
       }
 
       // 向 nestedHeadings 加入 headingObject
@@ -116,16 +124,23 @@
         return nestedHeadings
       }
 
-      function getNestedHeadings(headings) {
-        headings = Array.from(headings)
-        return headings.reduce((prev, heading) => {
-          const headingObject = getHeadingObject(heading)
-          return addNode(prev, headingObject)
-        }, [])
+      function getHeadings(options) {
+        const headings = document
+          .querySelector(options.contentSelector)
+          .querySelectorAll(options.headingSelector)
+        return headings
       }
 
-      const headings = getHeadings(options)
-      const nestedHeadings = getNestedHeadings(headings)
+      function getHeadingObject(heading) {
+        const type = heading.tagName
+
+        return {
+          el: heading,
+          type,
+          children: [],
+          key: '',
+        }
+      }
 
       function iterateNestedHeadings(nestedHeadings, cb) {
         for (const headingObject of nestedHeadings) {
