@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import ReactDOM from "react-dom";
 
+import { init } from "../index";
+
 const MarkdownToHtml = ({ text }) => {
   return (
     <div
+      className="article"
       style={{
         textAlign: "center",
       }}
@@ -23,8 +26,17 @@ const initialText = `# 0
 # 1
 `;
 
+const initialText2 = `# 0
+## 0-0
+## 0-1
+#### 0-1-0-0
+### 0-1-1
+## 0-2
+# 1
+`;
+
 const App = () => {
-  const [text, setText] = useState(initialText);
+  const [text, setText] = useState(initialText2);
 
   return (
     <>
@@ -47,3 +59,5 @@ const App = () => {
 };
 
 ReactDOM.render(<App />, document.getElementById("root"));
+
+init();
